@@ -1,0 +1,26 @@
+from PIL import Image
+
+# 定义字符画中使用的字符集，根据需要自行添加或修改
+ascii_chars = list("@B%8&WM#*oahkbdpwmZO0QCJYLOi7r1v$=-~^_`'. ")
+
+# 定义将像素转换为字符的函数
+def get_char(pixel):
+    gray = int(0.2126 * pixel[0] + 0.7152 * pixel[1] + 0.0722 * pixel[2])
+    unit = 256 / len(ascii_chars)
+    return ascii_chars[int(gray / unit)]
+
+# 加载要转换的图片并调整大小
+image = Image.open("FN)QDFP%ZMJ[RHSDHU7FRH1.jpg")
+width, height = image.size
+aspect_ratio = height / width
+new_width = 120
+new_height = aspect_ratio * new_width * 0.5
+image = image.resize((new_width, int(new_height)))
+
+# 将像素转换为字符并输出到屏幕
+for y in range(image.height):
+    line = ""
+    for x in range(image.width):
+        pixel = image.getpixel((x, y))
+        line += get_char(pixel)
+    print(line)
